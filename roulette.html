@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recycling Tips Roulette Wheel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        #logo {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+        #wheel {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 5px solid #4caf50;
+            position: relative;
+            background: conic-gradient(#4caf50 0 10%, #8bc34a 10% 20%, #cddc39 20% 30%, #ffeb3b 30% 40%, #ffc107 40% 50%, #ff9800 50% 60%, #ff5722 60% 70%, #f44336 70% 80%, #e91e63 80% 90%, #9c27b0 90% 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #spinButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #spinButton:hover {
+            background-color: #45a049;
+        }
+        #result {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            width: 60%;
+        }
+        .segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            clip-path: polygon(100% 100%, 0 100%, 100% 0);
+        }
+    </style>
+</head>
+<body>
+    <img id="logo" src="rmrs_logo.png" alt="Ridge Meadows Recycling Society Logo">
+    <div id="wheel">
+        <!-- Segments will be added dynamically by JavaScript -->
+    </div>
+    <button id="spinButton">PRESS ME TO SPIN</button>
+    <div id="result"></div>
+
+    <script>
+        const tips = [
+            "Store Bags in Your Car: Passenger Seat on Shopping Day: Keep your reusable bags in the passenger seat on the day you plan to shop so they are easily accessible.",
+            "Set Location-Based Reminders: Save On Foods Location Alert: If you frequently shop at specific stores, set up location-based reminders on your phone. The reminder will prompt you to grab your bags from the car when you're near the store.",
+            "Add to the Shopping List: Start with 'Bags': Always begin your shopping list with the word 'bags' to remind yourself to bring them along.",
+            "Use Time-Based Reminders: Weekly Shopping Notification: Schedule notifications on your phone for regular shopping days to remind you to bring your bags.",
+            "Place Bags by Your Front Door: Near Your Keys: Place your reusable bags near your front door or by your keys so you can easily grab them on your way out.",
+            "Invest in Foldable Key Chain Bags: Handbag Convenience: Invest in foldable key chain bags that you can always keep in your handbag for unexpected shopping trips.",
+            "Choose Attractive Bags: Fashion Accessory: Choose reusable bags that you love and are excited to use. Treat them as a fashion accessory to express yourself while shopping.",
+            "Store Essential Items in Your Bags: Keep Important Items Together: Store essential items like your shopping list, purse, keys, shoes, and phone inside your reusable bag to ensure you don't forget them.",
+            "Leave Reminder Notes: Visible Stickers: Stick reminder notes on your fridge, coffee machine, near the door, or on the dashboard of your car to remember your bags.",
+            "Color Code Your Bags: Product-Specific Colors: Use different coloured bags for specific products, such as green for produce, red for meat, and other colours for household items. This not only helps with organization but also makes shopping more fun.",
+            "Retrieve Forgotten Bags from the Car: Go Back if Forgotten: If you realize you’ve forgotten your bags while shopping, set your cart aside and run out to the car to get them. After a few missed spots in line, you'll start to remember them."
+        ];
+
+        const wheel = document.getElementById('wheel');
+        const result = document.getElementById('result');
+        const spinButton = document.getElementById('spinButton');
+
+        // Create wheel segments
+        tips.forEach((tip, index) => {
+            const segment = document.createElement('div');
+            segment.classList.add('segment');
+            segment.style.transform = `rotate(${index * (360 / tips.length)}deg) skewY(${90 - (360 / tips.length)}deg)`;
+            wheel.appendChild(segment);
+        });
+
+        // Spin the wheel
+        spinButton.addEventListener('click', () => {
+            const randomTipIndex = Math.floor(Math.random() * tips.length);
+            const angle = randomTipIndex * (360 / tips.length) + (360 * 5); // Adding extra rotations for effect
+            wheel.style.transition = 'transform 3s ease-out';
+            wheel.style.transform = `rotate(${angle}deg)`;
+
+            setTimeout(() => {
+                result.innerText = tips[randomTipIndex];
+                wheel.style.transition = '';
+                wheel.style.transform = `rotate(${randomTipIndex * (360 / tips.length)}deg)`;
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
