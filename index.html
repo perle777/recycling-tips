@@ -62,11 +62,12 @@
             transform-origin: 100% 100%;
             clip-path: polygon(100% 100%, 0 100%, 100% 0);
         }
-        .confetti {
-            position: absolute;
+        .confetti-piece {
+            position: fixed;
             width: 10px;
             height: 10px;
             background-color: #ff0;
+            opacity: 0;
             animation: confetti 2s ease-out forwards;
         }
         @keyframes confetti {
@@ -101,6 +102,7 @@
         const wheel = document.getElementById('wheel');
         const result = document.getElementById('result');
         const spinButton = document.getElementById('spinButton');
+        let hasSpun = false;
 
         // Create wheel segments
         tips.forEach((tip, index) => {
@@ -113,37 +115,44 @@
         // Function to create confetti effect
         const createConfetti = () => {
             for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.classList.add('confetti');
-                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                confetti.style.left = `${Math.random() * window.innerWidth}px`;
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 2000);
+                const confettiPiece = document.createElement('div');
+                confettiPiece.classList.add('confetti-piece');
+                confettiPiece.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confettiPiece.style.left = `${Math.random() * window.innerWidth}px`;
+                confettiPiece.style.top = `${Math.random() * window.innerHeight}px`;
+                document.body.appendChild(confettiPiece);
+                setTimeout(() => confettiPiece.remove(), 2000);
             }
         };
 
         // Spin the wheel
         spinButton.addEventListener('click', () => {
-            const randomTipIndex = Math.floor(Math.random() * tips.length);
-            const angle = randomTipIndex * (360 / tips.length) + (360 * 5); // Adding extra rotations for effect
-            wheel.style.transition = 'transform 3s ease-out';
-            wheel.style.transform = `rotate(${angle}deg)`;
+            if (!hasSpun) {
+                hasSpun = true;
+                const randomTipIndex = Math.floor(Math.random() * tips.length);
+                const angle = randomTipIndex * (360 / tips.length) + (360 * 5); // Adding extra rotations for effect
+                wheel.style.transition = 'transform 3s ease-out';
+                wheel.style.transform = `rotate(${angle}deg)`;
 
-            setTimeout(() => {
-                // Display the selected tip with highlighted parts
-                const [boldPart, normalPart] = tips[randomTipIndex].split(': ');
-                result.innerHTML = `<strong>${boldPart}:</strong> ${normalPart}`;
-                result.style.transform = 'scale(1.5)';
-                setTimeout(() => result.style.transform = 'scale(1)', 2000);
-                wheel.style.transition = '';
-                wheel.style.transform = `rotate(${randomTipIndex * (360 / tips.length)}deg)`;
-                // Trigger confetti effect
-                createConfetti();
-            }, 3000);
+                setTimeout(() => {
+                    // Display the selected tip with highlighted parts
+                    const [boldPart, normalPart] = tips[randomTipIndex].split(': ');
+                    result.innerHTML = `<strong>${boldPart}:</strong> ${normalPart}`;
+                    result.style.transform = 'scale(1.5)';
+                    setTimeout(() => result.style.transform = 'scale(1)', 2000);
+                    wheel.style.transition = '';
+                    wheel.style.transform = `rotate(${randomTipIndex * (360 / tips.length)}deg)`;
+                    // Trigger confetti effect
+                    createConfetti();
+                }, 3000);
+            }
         });
 
-        // Make sure the button is clickable
-        spinButton.style.pointerEvents = 'auto';
+        // Allow multiple spins after refreshing the page
+        window.addEventListener('beforeunload', () => {
+            hasSpun = false;
+        });
     </script>
 </body>
 </html>
+
