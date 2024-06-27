@@ -85,7 +85,7 @@
     <div id="result"></div>
 
     <script>
-        const tips = [
+        let tips = [
             "Store Bags in Your Car: Passenger Seat on Shopping Day: Keep your reusable bags in the passenger seat on the day you plan to shop so they are easily accessible.",
             "Set Location-Based Reminders: Save On Foods Location Alert: If you frequently shop at specific stores, set up location-based reminders on your phone. The reminder will prompt you to grab your bags from the car when you're near the store.",
             "Add to the Shopping List: Start with 'Bags': Always begin your shopping list with the word 'bags' to remind yourself to bring them along.",
@@ -127,30 +127,34 @@
 
         // Spin the wheel
         spinButton.addEventListener('click', () => {
-            if (!hasSpun) {
-                hasSpun = true;
-                const randomTipIndex = Math.floor(Math.random() * tips.length);
-                const angle = randomTipIndex * (360 / tips.length) + (360 * 5); // Adding extra rotations for effect
-                wheel.style.transition = 'transform 3s ease-out';
-                wheel.style.transform = `rotate(${angle}deg)`;
-
-                setTimeout(() => {
-                    // Display the selected tip with highlighted parts
-                    const [boldPart, normalPart] = tips[randomTipIndex].split(': ');
-                    result.innerHTML = `<strong>${boldPart}:</strong> ${normalPart}`;
-                    result.style.transform = 'scale(1.5)';
-                    setTimeout(() => result.style.transform = 'scale(1)', 2000);
-                    wheel.style.transition = '';
-                    wheel.style.transform = `rotate(${randomTipIndex * (360 / tips.length)}deg)`;
-                    // Trigger confetti effect
-                    createConfetti();
-                }, 3000);
+            if (tips.length === 0) {
+                alert("That's everything we've got! If you have more tips, DM us on Instagram @ridgemeadowsrecycling!");
+                return;
             }
-        });
 
-        // Allow multiple spins after refreshing the page
-        window.addEventListener('beforeunload', () => {
-            hasSpun = false;
+            const randomTipIndex = Math.floor(Math.random() * tips.length);
+            const angle = randomTipIndex * (360 / tips.length) + (360 * 5); // Adding extra rotations for effect
+            wheel.style.transition = 'transform 3s ease-out';
+            wheel.style.transform = `rotate(${angle}deg)`;
+
+            setTimeout(() => {
+                // Display the selected tip with highlighted parts
+                const [boldPart, normalPart] = tips[randomTipIndex].split(': ');
+                result.innerHTML = `<strong>${boldPart}:</strong> ${normalPart}`;
+                result.style.transform = 'scale(1.5)';
+                setTimeout(() => result.style.transform = 'scale(1)', 2000);
+                wheel.style.transition = '';
+                wheel.style.transform = `rotate(${randomTipIndex * (360 / tips.length)}deg)`;
+                // Trigger confetti effect
+                createConfetti();
+                // Remove the selected tip from the array
+                tips.splice(randomTipIndex, 1);
+
+                // Check if tips are exhausted
+                if (tips.length === 0) {
+                    alert(`That's everything we've got! If you have more tips, DM us on Instagram <a href="https://www.instagram.com/ridgemeadowsrecycling?igshid=MWU5d3lnMzE4M2gwbQ==">@ridgemeadowsrecycling!</a>`);
+                }
+            }, 3000);
         });
     </script>
 </body>
