@@ -42,9 +42,10 @@
             border-radius: 10px;
             cursor: pointer;
             z-index: 2;
+            transition: background-color 0.3s ease;
         }
         #spinButton:hover {
-            background-color: #013b6b;
+            background-color: #0260a1;
         }
         #result {
             text-align: center;
@@ -129,7 +130,10 @@
         };
 
         // Spin the wheel
-        spinButton.addEventListener('click', () => {
+        spinButton.addEventListener('click', (event) => {
+            const isHovered = event.target.style.backgroundColor === 'rgb(2, 96, 161)';
+            if (!isHovered) return;
+
             if (isSpinning) return;
 
             if (tips.length === 0) {
@@ -164,8 +168,15 @@
                 isSpinning = false;
             }, 3000);
         });
+
+        // Function to change background color on hover
+        spinButton.addEventListener('mouseover', (event) => {
+            event.target.style.backgroundColor = '#0260a1';
+        });
+
+        spinButton.addEventListener('mouseout', (event) => {
+            event.target.style.backgroundColor = '#01487c';
+        });
     </script>
 </body>
 </html>
-
-
