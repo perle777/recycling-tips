@@ -52,7 +52,7 @@
             color: white;
             padding: 20px;
             border-radius: 5px;
-            width: 60%;
+            width: 80%;
             transition: transform 0.3s ease-out;
         }
         .segment {
@@ -102,7 +102,6 @@
         const wheel = document.getElementById('wheel');
         const result = document.getElementById('result');
         const spinButton = document.getElementById('spinButton');
-        let hasSpun = false;
 
         // Create wheel segments
         tips.forEach((tip, index) => {
@@ -152,7 +151,7 @@
 
                 // Check if tips are exhausted
                 if (tips.length === 0) {
-                    alert(`That's everything we've got! If you have more tips, DM us on Instagram <a href="https://www.instagram.com/ridgemeadowsrecycling?igshid=MWU5d3lnMzE4M2gwbQ==">@ridgemeadowsrecycling!</a>`);
+                    result.innerHTML = `That's everything we've got! If you have more tips, DM us on Instagram <a href="https://www.instagram.com/ridgemeadowsrecycling?igshid=MWU5d3lnMzE4M2gwbQ==" target="_blank">@ridgemeadowsrecycling!</a>`;
                 }
             }, 3000);
         });
