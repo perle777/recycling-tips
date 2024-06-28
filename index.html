@@ -32,13 +32,13 @@
         #spinButton {
             display: block;
             margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 20px;
+            padding: 15px 30px;
+            font-size: 22px;
             font-weight: bold;
             color: white;
             background-color: #01487c;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
         }
         #spinButton:hover {
@@ -102,6 +102,7 @@
         const wheel = document.getElementById('wheel');
         const result = document.getElementById('result');
         const spinButton = document.getElementById('spinButton');
+        let isSpinning = false;
 
         // Create wheel segments
         tips.forEach((tip, index) => {
@@ -126,11 +127,14 @@
 
         // Spin the wheel
         spinButton.addEventListener('click', () => {
+            if (isSpinning) return;
+
             if (tips.length === 0) {
                 alert("That's everything we've got! If you have more tips, DM us on Instagram @ridgemeadowsrecycling!");
                 return;
             }
 
+            isSpinning = true;
             const randomTipIndex = Math.floor(Math.random() * tips.length);
             const angle = randomTipIndex * (360 / tips.length) + (360 * 5); // Adding extra rotations for effect
             wheel.style.transition = 'transform 3s ease-out';
@@ -153,9 +157,12 @@
                 if (tips.length === 0) {
                     result.innerHTML = `That's everything we've got! If you have more tips, DM us on Instagram <a href="https://www.instagram.com/ridgemeadowsrecycling?igshid=MWU5d3lnMzE4M2gwbQ==" target="_blank">@ridgemeadowsrecycling!</a>`;
                 }
+
+                isSpinning = false;
             }, 3000);
         });
     </script>
 </body>
 </html>
+
 
